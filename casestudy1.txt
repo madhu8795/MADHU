@@ -1,0 +1,97 @@
+CREATE TABLE department(DepartmentCode Varchar2(10) CONSTRAINT department_pk PRIMARY KEY,departmentname varchar2(50)); 
+desc department;
+CREATE TABLE Project(ProjectID Varchar2(10) CONSTRAINT project_pk PRIMARY KEY,projectname varchar2(50)); 
+desc project;
+CREATE TABLE Employee(Employeenumber number(10) CONSTRAINT employee_pk PRIMARY KEY,employeename varchar2(50),Dateofjoining Date,Designation varchar2(5),salary number(10,2),manageremployeenumber number(10) CONSTRAINT Employee_fk1 REFERENCES employee(employeenumber));
+ALTER TABLE employee ADD Departmentcode varchar2(10) CONSTRAINT Employee_fk2 REFERENCES Department(Departmentcode);
+desc employee;
+CREATE TABLE EmployeeProject(EmployeeNumber Number(10) CONSTRAINT Employeeproject_fk1 References employee(employeenumber),ProjectID Varchar2(10) CONSTRAINT Employeeproject_pk References project(projectID),StartDate Date,EndDate Date,CONSTRAINT Employeeproject_number PRIMARY KEY (Employeenumber,ProjectID)); 
+desc employeeproject;
+ALTER TABLE Employee ADD DateofBirth Date;
+desc employee;
+ALTER TABLE Employee ADD CONSTRAINT Employee_ch CHECK(Designation IN ('CEO','MD','SM','M','TL','SSE','SE'));
+desc employee;
+ALTER TABLE Employee MODIFY EmployeeName varchar2(60);
+desc employee;
+
+INSERT INTO DEPARTMENT VALUES ('LKM', 'Learning and Knowledge Management');
+INSERT INTO DEPARTMENT VALUES ('JavaCap', 'Java Capability');
+INSERT INTO DEPARTMENT VALUES ('.NETCap', 'Dotnet Capability');
+select * from department;//to see rows of table department
+
+INSERT INTO PROJECT VALUES ('P1', 'Retail');
+INSERT INTO PROJECT VALUES ('P2', 'Insurance');
+INSERT INTO PROJECT VALUES ('P3', 'Resources');
+INSERT INTO PROJECT VALUES ('P4', 'Banking');
+INSERT INTO PROJECT VALUES ('P5', 'Internal Project');
+select * from project;//to see rows of table project
+
+INSERT INTO EMPLOYEE VALUES (7001,'Cynthya'   ,  '02/14/1997' ,'CEO'  ,800000.00  , 7001,    NULL     , '05/12/1975');
+INSERT INTO EMPLOYEE VALUES (7002,'Mario'     ,  '04/16/1998' ,'MD'   ,500000.00  , 7001,   'JavaCap' , '02/14/1976');
+INSERT INTO EMPLOYEE VALUES (7003, 'Jacob'    ,  '05/16/1998' , 'MD'  , 400000.00 , 7001,   '.NETCap' , '05/16/1976' );
+INSERT INTO EMPLOYEE VALUES (7004, 'Lucy'     ,  '07/15/2000' , 'MD'  , 420000.00 , 7001,   'LKM'     , '05/15/1978');
+INSERT INTO EMPLOYEE VALUES (7005, 'Amy'      ,  '11/16/2000' , 'SM'  , 240000.00 , 7002,   'JavaCap' , '09/16/1978' );
+INSERT INTO EMPLOYEE VALUES (7006, 'Frank'    ,  '09/19/2000' , 'SM'  , 220000.00 , '7003', '.NETCap' , '09/17/1978' );
+INSERT INTO EMPLOYEE VALUES (7007, 'Phil'     ,  '11/12/2000' , 'SM'  , 220000.00 , '7004', 'LKM'     , '12/11/1974');
+INSERT INTO EMPLOYEE VALUES (7008, 'Arnold'   ,  '04/01/2000' , 'TL'  , 80000.00  , '7005', 'JavaCap' , '03/13/1984' );
+INSERT INTO EMPLOYEE VALUES (7009, 'Jack'     ,  '06/23/2000' , 'TL'  , 88000.00  , '7006', '.NETCap' , '09/23/1984');
+INSERT INTO EMPLOYEE VALUES (7010, 'Justin'   ,  '02/09/2000' , 'TL'  , 86000.00  , '7007', 'LKM'     , '11/07/1984');
+INSERT INTO EMPLOYEE VALUES (7011, 'Megan'    ,  '09/19/2002' , 'TL'  , 87000.00  , '7007', 'LKM'     , '07/21/1984');
+INSERT INTO EMPLOYEE VALUES (7012, 'Stuart'   ,  '05/22/2016' , 'SSE' , 35000.00  , '7008', 'JavaCap' , '05/23/1980');
+INSERT INTO EMPLOYEE VALUES (7013, 'Clarke'   ,  '05/22/2016' , 'SSE' , 32000.00  , '7008', 'JavaCap' , '02/24/1994' );
+INSERT INTO EMPLOYEE VALUES (7014, 'Darwin'   ,  '05/22/2016' , 'SE' , '30000.00' , '7009', '.NETCap' , '05/03/1992');
+INSERT INTO EMPLOYEE VALUES (7015, 'Chelsea'  ,  '05/22/2016' , 'SSE' , 38000.00  , '7010', 'LKM'     , '01/19/1994' );
+INSERT INTO EMPLOYEE VALUES (7016, 'Dan'      ,  '07/07/2016' , 'SE' , 30000.00   , '7009', '.NETCap' , '05/27/1991');
+INSERT INTO EMPLOYEE VALUES (7017, 'Jimmy'    ,  '07/07/2016' , 'SE' , 32000.00   , '7010', 'LKM'     , '08/11/1993' );
+INSERT INTO EMPLOYEE VALUES (7018, 'James'    ,  '07/07/2016' , 'SE' , 35000.00   , NULL, '.NETCap'  , '12/19/1993');
+INSERT INTO EMPLOYEE VALUES (7019, 'Joseph'   ,  '07/07/2016' , 'SE' , 30000.00   , NULL, '.NETCap'  , '12/31/1992' );
+select * from employee;//to see rows of table employee
+
+INSERT INTO EMPLOYEEPROJECT VALUES (7005, 'P1', '07/01/2014', null);
+INSERT INTO EMPLOYEEPROJECT VALUES (7006, 'P1', '06/01/2016', null);
+INSERT INTO EMPLOYEEPROJECT VALUES (7004, 'P2', '07/16/2014', '05/11/2015');
+INSERT INTO EMPLOYEEPROJECT VALUES (7013, 'P2', '07/01/2014', '11/11/2014');
+INSERT INTO EMPLOYEEPROJECT VALUES (7012, 'P2', '06/01/2016', '02/28/2015');
+INSERT INTO EMPLOYEEPROJECT VALUES (7007, 'P3', '05/11/2015', null);
+INSERT INTO EMPLOYEEPROJECT VALUES (7014, 'P3', '11/11/2014', null);
+INSERT INTO EMPLOYEEPROJECT VALUES (7013, 'P3', '02/28/2015', null);
+INSERT INTO EMPLOYEEPROJECT VALUES (7016, 'P2', '07/16/2014', null);
+INSERT INTO EMPLOYEEPROJECT VALUES (7012, 'P1', '03/01/2015', null);
+select * from employeeproject;//to see rows of table employeeproject
+
+//QUERIES
+SELECT employeename,designation,salary FROM Employee;
+
+SELECT DISTINCT Designation from Employee;
+
+SELECT employeename,salary from Employee WHERE Designation='SSE' AND salary>35000;
+
+SELECT employeename,designation,salary FROM Employee WHERE Designation IN('SM','SSE','SE');
+
+SELECT employeename,DateofJoining FROM Employee WHERE Dateofjoining LIKE '__/__/2000';
+
+SELECT employeename,Dateofbirth,((SYSDATE-Dateofbirth)/365) as age FROM Employee;
+
+SELECT employeename,salary from Employee WHERE salary between 50000 AND 100000;
+
+SELECT employeename FROM Employee WHERE employeename LIKE 'J%';
+
+SELECT employeename FROM Employee WHERE employeename LIKE '%k';
+
+SELECT employeename FROM Employee WHERE employeename LIKE '_a%';
+
+SELECT employeename FROM Employee WHERE employeename LIKE '___';
+
+SELECT employeename,DateofJoining FROM Employee WHERE Dateofjoining LIKE '05/__/____';
+
+
+select max(salary) from employee; 
+select round(avg(salary)) from employee; 
+select max(salary) from employee WHERE designation='TL';
+SELECT count(*) from employee;
+SELECT employeename,Dateofbirth FROM employee where dateofbirth BETWEEN '01-01-1990' AND '12-31-1999';
+
+
+
+
+
